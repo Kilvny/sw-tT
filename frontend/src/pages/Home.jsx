@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 import "../assets/style/Home.css"
 import PageLabel from "../components/common/PageLabel";
 import Button from "../components/common/Button";
+import axios from "axios";
 
 
 const Home = () => {
@@ -17,6 +18,9 @@ const Home = () => {
     const products = await getProducts();
     console.log(products);
     setProducts(products);
+    axios.get("http://localhost:3000/backend/add.php").then(response => {
+        console.log(response.data)
+      })
   };
 
   useEffect(() => {

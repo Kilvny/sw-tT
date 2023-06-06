@@ -5,68 +5,51 @@ import Footer from "../components/Footer";
 import "../assets/style/AddProduct.css";
 import CreateProductForm from "../components/CreateProductForm";
 import formValidator from "../utils/formValidator";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+
 
 const defaultdata = {
   sku: "",
   name: "",
   price: "",
-  type: {
-    DVD: { size: "" },
-    Furniture: {
-      height: "",
-      width: "",
-      length: "",
-    },
-    Book: { weight: "" },
-  },
+  Type_Switcher: "DVD", // default product rendered
 };
 
 const AddProduct = () => {
   const [formData, setFormData] = useState(defaultdata);
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
 
+  
   const handleFormChange = (event) => {
     const { name, value } = event.target;
 
-    // Type Furniture
-    if (name.startsWith("type.Furniture")) {
-        // output is type.Furniture. height or width or length
-      const [type, nestedType, nestedField] = name.split(".");
-      // console.log(`type: ${type}, nestedType: ${nestedType},nestedField: ${nestedField} value: ${value}`)
-      setFormData((prevData) => ({
-        ...prevData,
-        [type]: {
-          ...prevData.type[type],
-          Furniture: {
-            ...prevData.type.Furniture,
-            [nestedField]: value,
-          },
-        },
-      }));
-    // Type Book or DVD
-    } else if (name.startsWith("type.")) {
-      const [type, nestedField] = name.split(".");
-      setFormData((prevData) => ({
-        ...prevData,
-        [type]: {
-          ...prevData.type[type],
-          [nestedField]: value,
-        },
-      }));
-      // Common product information
-    } else {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
+    console.log(`name is ${name}`);
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleLSubmit = (e) => {
     e.preventDefault();
     // -TODO- use form data for vaildation
-    formValidator(formData)
+    // formValidator(formData)
+    // console.log(data);
     console.log(formData);
+    return;
     /* -TODO- Add API intergration logic here*/
+    axios
+      .post("http://localhost:3000/backend/dealwithObjAndArr.php", formData)
+      .then((res) => {
+        console.log(res.data);
+        // navigate("/")
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   return (
@@ -77,7 +60,12 @@ const AddProduct = () => {
           <PageLabel text={"Product Add"} />
           {/* action buttons */}
           <div className="action-buttons">
-            <Button text="Save" form="product-form" onClick={handleSubmit} />
+            <Button
+              name="submit-btn"
+              text="Save"
+              form="product-form"
+              onClick={handleLSubmit}
+            />
             <a href="/">
               <Button className="cancel-btn" text="Cancel" />
             </a>
@@ -90,6 +78,7 @@ const AddProduct = () => {
           name="formData"
           value={formData}
           onChange={handleFormChange}
+          register={register}
         />
         {/* TODO create product summary form, It will be a product card that dynamically changes when inputs change*/}
       </div>
