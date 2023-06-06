@@ -14,18 +14,18 @@
 //     },
 //   };
   
+// TODO implement the form validation after you decide the backend structure
 const formValidator = (form) => {
-    const { sku, name, price, type } = form
-    productType = Object.keys(type)[0]
-    if (productType === "DVD") {
-        const { size } = type
-    } else if (productType === "Book") {
-        const { weight } = type
-    } else if (productType === "Furniture") {
-        const { height, width, length } = type
-    }
     
 
 }
 
+
+const isEmpty = (field) => (
+    (field.toString().trim() === ""
+        ||
+        field.toString() === ",,")
+        ? true
+        : false
+)
 export default formValidator

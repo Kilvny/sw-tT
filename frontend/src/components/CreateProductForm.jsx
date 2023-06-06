@@ -3,12 +3,13 @@ import DVDForm from "./DVDForm";
 import FurnitureForm from "./FurnitureForm";
 import BookForm from "./BookForm";
 
-const CreateProductForm = ({ onChange, value }) => {
+const CreateProductForm = ({ onChange, value, register }) => {
   const options = ["DVD", "Furniture", "Book"];
   const [selectedOption, setselectedOption] = useState("DVD");
 //   console.log(value)
   const handleOptionChange = (event) => {
     setselectedOption(event.target.value);
+    onChange(event);
   };
   
 
@@ -24,6 +25,7 @@ const CreateProductForm = ({ onChange, value }) => {
             placeholder="Enter the unique SKU of the product"
             onChange={onChange}
             value={value.sku}
+            // {...register("sku", { required: true})}
           />
         </label>
         <label htmlFor="name" className="product_form_field">
@@ -35,6 +37,8 @@ const CreateProductForm = ({ onChange, value }) => {
             placeholder="Enter the name of the product"
             onChange={onChange}
             value={value.name}
+            // {...register("name")}
+
           />
         </label>
         <label htmlFor="price" className="product_form_field">
@@ -46,6 +50,8 @@ const CreateProductForm = ({ onChange, value }) => {
             placeholder="Enter price of the product"
             onChange={onChange}
             value={value.price}
+            // {...register("price")}
+
           />
         </label>
 
@@ -56,6 +62,7 @@ const CreateProductForm = ({ onChange, value }) => {
             name="Type_Switcher"
             id="type_switch"
             onChange={handleOptionChange}
+            {...register("type_switcher")}
           >
             <option value={options[0]}>{options[0]}</option>
             <option value={options[1]}>{options[1]}</option>

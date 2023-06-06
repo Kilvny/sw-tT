@@ -6,11 +6,11 @@ const BookForm = ({ onChange, value }) => {
       <p>Weight (KG)</p>
       <input
         type="text"
-        name="type.Book.weight"
+        name="weight"
         id="weight"
         placeholder="Enter weight of the product"
         onChange={onChange}
-        value={value.type.Book.weight}
+        value={value.type?.weight}
       />
       <span className='product_description'>Please provide weight in Kilograms</span>
     </label>  )
