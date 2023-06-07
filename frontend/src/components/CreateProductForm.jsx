@@ -3,15 +3,18 @@ import DVDForm from "./DVDForm";
 import FurnitureForm from "./FurnitureForm";
 import BookForm from "./BookForm";
 
-const CreateProductForm = ({ onChange, value, register }) => {
+const CreateProductForm = ({ onChange, value, register, option, errors }) => {
   const options = ["DVD", "Furniture", "Book"];
+  const measureOptions = ["size", "dimensions", "weight"];
   const [selectedOption, setselectedOption] = useState("DVD");
-//   console.log(value)
+
+  //   console.log(value)
   const handleOptionChange = (event) => {
+    const curOption = options.indexOf(event.target.value);
     setselectedOption(event.target.value);
     onChange(event);
+    option(measureOptions[curOption]);
   };
-  
 
   return (
     <div className="product-form">
@@ -23,10 +26,9 @@ const CreateProductForm = ({ onChange, value, register }) => {
             name="sku"
             id="sku"
             placeholder="Enter the unique SKU of the product"
-            onChange={onChange}
-            value={value.sku}
-            // {...register("sku", { required: true})}
+            {...register("sku", { required: "Product SKU is required" })}
           />
+          {errors.sku?.type === "required" && alert(errors.sku.message)}
         </label>
         <label htmlFor="name" className="product_form_field">
           <p>Name</p>
@@ -35,10 +37,7 @@ const CreateProductForm = ({ onChange, value, register }) => {
             name="name"
             id="name"
             placeholder="Enter the name of the product"
-            onChange={onChange}
-            value={value.name}
-            // {...register("name")}
-
+            {...register("name", { required: "Product Name is required" })}
           />
         </label>
         <label htmlFor="price" className="product_form_field">
@@ -48,10 +47,7 @@ const CreateProductForm = ({ onChange, value, register }) => {
             name="price"
             id="price"
             placeholder="Enter price of the product"
-            onChange={onChange}
-            value={value.price}
-            // {...register("price")}
-
+            {...register("price", { required: "Product price is required" })}
           />
         </label>
 
@@ -62,17 +58,17 @@ const CreateProductForm = ({ onChange, value, register }) => {
             name="Type_Switcher"
             id="type_switch"
             onChange={handleOptionChange}
-            {...register("type_switcher")}
           >
             <option value={options[0]}>{options[0]}</option>
             <option value={options[1]}>{options[1]}</option>
             <option value={options[2]}>{options[2]}</option>
           </select>
         </label>
-
-        {selectedOption === options[0] && <DVDForm onChange={onChange} value={value} />}
-        {selectedOption === options[1] && <FurnitureForm onChange={onChange} value={value} />}
-        {selectedOption === options[2] && <BookForm onChange={onChange} value={value}/>}
+        <div id="product_specification">
+          {selectedOption === options[0] && <DVDForm register={register} />}
+          {selectedOption === options[1] && <FurnitureForm register={register} errors={errors}/>}
+          {selectedOption === options[2] && <BookForm register={register} />}
+        </div>
       </form>
     </div>
   );
