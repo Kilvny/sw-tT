@@ -1,0 +1,4 @@
+2023-06-05 17:01:18 - SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ecommerce_test`.`product_specification`, CONSTRAINT `FK_product_specification` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`))
+2023-06-05 17:15:48 - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'string' in 'where clause'
+2023-06-05 17:17:13 - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'string' in 'where clause'
+2023-06-05 17:19:45 - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'string' in 'where clause'

@@ -1,19 +1,25 @@
-import React from 'react'
+import React from "react";
 
-const BookForm = ({ onChange, value }) => {
+const BookForm = ({ register }) => {
   return (
-    <label htmlFor='weight' className='product_form_field'>
+    <label
+      htmlFor="weight"
+      className="product_form_field"
+      id="product_form_field"
+    >
       <p>Weight (KG)</p>
       <input
         type="text"
         name="weight"
         id="weight"
         placeholder="Enter weight of the product"
-        onChange={onChange}
-        value={value.type?.weight}
+        {...register("type.weight", { required: true })}
       />
-      <span className='product_description'>Please provide weight in Kilograms</span>
-    </label>  )
-}
+      <span className="product_description">
+        Please provide weight in Kilograms
+      </span>
+    </label>
+  );
+};
 
-export default BookForm
+export default BookForm;

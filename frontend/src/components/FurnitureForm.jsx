@@ -1,34 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
+import PopUp from "./common/PopUp";
 
-const FurnitureForm = ({ onChange, value }) => {
-
-  const [dimensions, setDimensions] = useState([,,]);
-
-  const handleDimensionsChange = (event) => {
-    const { name, value } = event.target;
-    setDimensions((prevDimensions) => {
-        const updatedDimensions = [...prevDimensions];
-        const dimensionIndex = {
-          height: 0,
-          width: 1,
-          length: 2,
-        };
-        updatedDimensions[dimensionIndex[name]] = value;
-        onChange({ target: { value: updatedDimensions, name:'dimensions' } });
-        return updatedDimensions;
-    });
-  };
-
+const FurnitureForm = ({ register, errors }) => {
   return (
-    <label htmlFor="height" className="product_form_field">
+    <label
+      id="product_form_field"
+      htmlFor="height"
+      className="product_form_field"
+    >
       <p>Height (CM)</p>
       <input
         type="text"
         name="height"
         id="height"
         placeholder="Enter height of the product"
-        onChange={handleDimensionsChange}
-        value={dimensions[0] || ""}
+        {...register("type.dimensions.height", {
+          required: "required",
+          pattern: {
+            message: "Please enter a valid height",
+            value: /^-?(?:\d+|\d*\.\d+)$/,
+          },
+        })}
       />
       <p>Width (CM)</p>
       <input
@@ -36,8 +28,13 @@ const FurnitureForm = ({ onChange, value }) => {
         name="width"
         id="width"
         placeholder="Enter width of the product"
-        onChange={handleDimensionsChange}
-        value={dimensions[1] || ""}
+        {...register("type.dimensions.width", {
+          required: "required",
+          pattern: {
+            message: "Please enter a valid width",
+            value: /^-?(?:\d+|\d*\.\d+)$/,
+          },
+        })}
       />
       <p>Length (CM)</p>
       <input
@@ -45,12 +42,26 @@ const FurnitureForm = ({ onChange, value }) => {
         name="length"
         id="length"
         placeholder="Enter length of the product"
-        onChange={handleDimensionsChange}
-        value={dimensions[2] || ""}
+        {...register("type.dimensions.length", {
+          required: "required",
+          pattern: {
+            message: "Please enter a valid length",
+            value: /^-?(?:\d+|\d*\.\d+)$/,
+          },
+        })}
       />
       <span className="product_description">
         Please provide dimensions in HxWxL format
       </span>
+      {errors?.type?.dimensions?.height && (
+        <div>{<PopUp popupText={errors.type.dimensions.height.message} />}</div>
+      )}
+      {errors?.type?.dimensions?.width && (
+        <div>{<PopUp popupText={errors.type.dimensions.width.message} />}</div>
+      )}
+      {errors?.type?.dimensions?.length && (
+        <div>{<PopUp popupText={errors.type.dimensions.length.message} />}</div>
+      )}
     </label>
   );
 };
