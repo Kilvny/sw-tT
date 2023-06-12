@@ -9,7 +9,7 @@ class Furniture extends Product
     protected $width;
     protected $length;
     protected $dimensions;
-    protected $unit = "CM"; 
+    protected $unit = ""; 
     protected $type = 'dimensions';
 
 
