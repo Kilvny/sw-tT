@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { getProducts } from "../utils/api";
 import ProductCard from "../components/ProductCard";
 import $j from "jquery";
 import Footer from "../components/Footer";
@@ -12,11 +11,8 @@ const Home = () => {
   const [products, setProducts] = useState([]); // keep track of products
   const [selectedProducts, setDelectedProducts] = useState([])
 
-  // get products from server {currently getting products from static source}
+  // get products from server 
   const fetchProducts = async () => {
-    const products = await getProducts();
-    console.log(products);
-    setProducts(products);
     const data = await axios
       .get("http://localhost:80/mvc/product/getall", {
         responseType: "json",
@@ -25,7 +21,9 @@ const Home = () => {
         console.log(response.data);
         let data = response.data.replace("<br /> Product <br />","")
         console.log(JSON.parse(data));
-      });
+        // return JSON.parse(data)
+        setProducts(JSON.parse(data));
+      })
     // await console.log(data)
   };
 
@@ -36,7 +34,7 @@ const Home = () => {
     return () => {
       // no cleanup needed;
     };
-  }, [fetchProducts]);
+  }, []);
 
   useEffect(() => {
     axios
@@ -45,8 +43,7 @@ const Home = () => {
         { data: selectedProducts }
       )
       .then((res) => {
-        // console.log(res);
-        // navigate("/")
+        console.log(res);
       })
       .catch((err) => {
         console.log(err.message);
@@ -101,14 +98,12 @@ const Home = () => {
               key={product.id}
               className="product-card"
               id={product.id}
-              SKU={product.SKU}
+              SKU={product.sku}
               name={product.name}
               price={product.price}
               type={product.type}
-              specification={
-                product.Size_MB || product.Weight_Kg || product.Dimensions
-              }
               unit={product.unit}
+              value={product.value}
             />
           ))}
         </div>

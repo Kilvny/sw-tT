@@ -19,45 +19,50 @@ class Product extends Controller
 
     public function add()
     {
-        if ($_SERVER["REQUEST_METHOD"] != "POST") {
-            var_dump(['status' => 404, 'message' => 'Only POST method is allowed']);
-            return ['status' => 404, 'message' => 'Only POST method is allowed'];
+        try {
+            if ($_SERVER["REQUEST_METHOD"] != "POST") {
+                var_dump(['status' => 404, 'message' => 'Only POST method is allowed']);
+                return ['status' => 404, 'message' => 'Only POST method is allowed'];
+            }
+            // receive the form data and restructure it 
+            $formData = json_decode(file_get_contents("php://input"), true); // to deal with data as associatve array we specify second arg true 
+
+    
+    
+            $type = $formData['product_type'];
+            $model = "App\\Models\\" . $type;
+            // create a new model object
+            $product = new $model();
+    
+    
+            // set and get the data. 
+            // Common properties
+            $product->setSku($formData['sku']);
+            $product->setName($formData['name']);
+            $product->setPrice($formData['price']);
+            // dynamic properties 
+            $method = array_keys(($formData['type']))[0];
+            $product_specifications = $formData['type']; // if changes were made
+    
+    
+            $setMethod = 'set' . ucfirst($method); // to make the method like setName, setmethod..
+            $getMethod = 'get' . ucfirst($method); // to make the method like getName, getmethod..
+            if (method_exists($product, $setMethod)) {
+                $product->$setMethod($product_specifications[$method]); // setmethod(specifications)
+            }
+    
+
+    
+            $response = $product->saveToDatabase();
+            var_dump($response);
+            
+        } catch (Throwable $e) {
+            $err = ErrorHandler::errorHandle($e);
+            $response = ['status' => 404, 'message' => "The following error occured while adding the product" . $err];
+            
+        } finally {
+            return $response;
         }
-        // receive the form data and restructure it 
-        $formData = json_decode(file_get_contents("php://input"), true); // to deal with data as associatve array we specify second arg true 
-        echo "<br />";
-        var_dump($formData);
-
-
-        $type = $formData['product_type'];
-        $model = "App\\Models\\" . $type;
-        // create a new model object
-        $product = new $model();
-
-
-        // set and get the data. 
-        // Common properties
-        $product->setSku($formData['sku']);
-        $product->setName($formData['name']);
-        $product->setPrice($formData['price']);
-        // dynamic properties 
-        $method = array_keys(($formData['type']))[0];
-        $product_specifications = $formData['type']; // if changes were made
-
-
-        $setMethod = 'set' . ucfirst($method); // to make the method like setName, setmethod..
-        $getMethod = 'get' . ucfirst($method); // to make the method like getName, getmethod..
-        if (method_exists($product, $setMethod)) {
-            $product->$setMethod($product_specifications[$method]); // setmethod(specifications)
-        }
-
-        echo "<br />";
-        var_dump($setMethod);
-        var_dump($product->$getMethod());
-
-        $response = $product->saveToDatabase();
-        var_dump($response);
-        return $response;
     }
 
 
@@ -101,11 +106,11 @@ class Product extends Controller
 
             $response = ['status' => 301, 'message' => 'Data deleted successfully. Affected records: ' . $rowsAffected];
             var_dump($response);
-            return $response;
         } catch (Throwable $e) {
             $err = ErrorHandler::errorHandle($e);
             $response = ['status' => 404, 'message' => "The following error occured while deleting" . $err];
+        } finally {
             return $response;
-        };
+        }
     }
 }

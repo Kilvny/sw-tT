@@ -7,6 +7,8 @@ import CreateProductForm from "../components/CreateProductForm";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { checkAddProductError } from "../utils/helper";
+import { isEmpty } from "../utils/formValidator";
 
 const defaultdata = {
   Type_Switcher: "DVD", // default product rendered
@@ -20,12 +22,14 @@ const AddProduct = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [selectedOption, setselectedOption] = useState("size");
+  const [selectedOption, setselectedOption] = useState("size"); // as the default rendered is DVD
 
+  // keep track of the specifications (dimensions, size etc.)
   const option = (optn) => {
     setselectedOption(optn);
   };
 
+  // keep track of the selected type in the dropdown (DVD, Furniture etc.)
   const handleFormChange = (event) => {
     const { name, value } = event.target;
 
@@ -46,48 +50,21 @@ const AddProduct = () => {
 
   const handleLSubmit = (data) => {
     console.log(`%c selectedOption is ${selectedOption}`, "font-size: 18px;");
+    
+    isEmpty(data, selectedOption) // it will raise an error if exists
 
-    for (let property in data["type"]) {
-      if ((property !== selectedOption) ) delete data["type"][property];
-      if ((typeof(data["type"][property]) === 'string') && ((data["type"][property])?.trim() == "")) {
-        delete data["type"][property];
-        alert("all fields are required")
-        return
-      } else {
-        for (let nestedProperty in data["type"][property]) {
-            if (data['type'][property][nestedProperty]?.trim() == "" ){
-                delete data["type"][property][nestedProperty]
-                alert("all fields are required")
-                return
-            }
-        }
-      }
-      
-      // whitespace
-    }
-
-    try {
-        for(let property in data) {
-            if ((data[property]?.toString().trim() == "")) {
-                alert("all fields are required")
-                return
-            }
-        }
-        
-    } catch (error) {
-        console.log(error)
-    }
+    // set the selected type as the product_type to send it with the data
+    data["product_type"] = typeData.Type_Switcher;
     
 
-    data["product_type"] = typeData.Type_Switcher;
-    console.log(data);
-    console.log(typeData);
-    /* -TODO- Add API intergration logic here*/
+
     axios
       .post("http://localhost:80/mvc/product/add", data)
       .then((res) => {
-        console.log(res.data);
-        // navigate("/")
+        if(!checkAddProductError(res)) // if there is no error
+        {
+            navigate("/")
+        }
       })
       .catch((err) => {
         console.log(err.message);
