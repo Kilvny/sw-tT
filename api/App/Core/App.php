@@ -16,16 +16,18 @@ class App {
         $this->render();
     }
 
-    // private function getURL() {
-    //     $_SERVER['REQUEST_URI'];
-    //     return $_SERVER['QUERY_STRING']; // without specifying the root folder name (mvc/ etc)
-    // }
 
-    public function test () {
+    
+    public function test () 
+    {
         echo __METHOD__, PHP_EOL;
     }
 
-    private function getURL() {
+    /**
+     * Extracts controller/method/params from the request URL
+     */
+    private function getURL() 
+    {
         /**
          * @return -1 if no URL is specified
          * 
@@ -46,7 +48,11 @@ class App {
     }
 
 
-    private function render() {
+    /**
+     * loads the controller and method 
+     */
+    private function render() 
+    {
         $controller = "App\Controllers\\" . $this->controller;
         if (!class_exists($controller)) {
             echo "class $controller does not exist";
@@ -64,21 +70,3 @@ class App {
 }
 
 
-
-// TODO 
-/**
- * We get the method we want from the URI of the API, like
- *  api/v1/product/add, 
- * delete -> api/v1/product/delete with a list of id's as parameter
- * 
- * The other main core point is :
- * @return :) ركز يعني 
- * I want to have a main add method that will create instance of $product = new product();
- * that will be either a DVD, Furniture, or Book! depending on the received type parameter!
- * 
- * @param str
- * After that there's two options, one is to serialize the object, second is to set and get the values
- */
-
-
- // TODO - just take copy of this great MCV infrastructure to use it in the future with any other projects

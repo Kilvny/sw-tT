@@ -1,4 +1,5 @@
 import React from "react";
+import { toTitleCase } from "../utils/helper";
 
 {
   /**
@@ -6,7 +7,7 @@ import React from "react";
      * 
      */
 }
-const ProductCard = ({ id, SKU, name, price, specification, unit, type }) => {
+const ProductCard = ({ id, SKU, name, price, unit, type, value }) => {
   return (
       <div className="product-card" id={`${id}`}>
         <div className="product-card-header">
@@ -16,10 +17,8 @@ const ProductCard = ({ id, SKU, name, price, specification, unit, type }) => {
             <li>{SKU}</li>
             <li>{name}</li>
             <li>{price}$</li>
-            {unit === "HxWxL" ?
-            <li>{type}: {specification[0]}x{specification[1]}x{specification[2]}</li>
-            :
-            <li>{type}: {specification} {unit}</li>
+            {
+            <li>{toTitleCase(type)}: {value} {unit}</li>
             }
         </ul>
       </div>

@@ -19,11 +19,12 @@ class Book extends Product
         return $this->weight;
     }
 
-
-    public function getFromDatabase() {
+    // in case we wanted to work with saved products one by one
+    public function getFromDatabase() 
+    {
         echo "SKU: " . $this->getSku() . "<br>";
         echo "Name: " . $this->getName() . "<br>";
         echo "Price: " . $this->getPrice() . "<br>";
         echo "Weight: " . $this->getWeight() . "<br>";
-      }
+    }
 }
