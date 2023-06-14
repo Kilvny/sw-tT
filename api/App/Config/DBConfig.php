@@ -5,10 +5,11 @@ namespace App\Config;
 class DBConfig 
 {
     // TODO : Implement DOTENV file to get this configuration from 
-    private $server = 'sql305.byetcluster.com';
-    private $dbname = "ecommerce";
-    private $user = "if0_34419342";
-    private $pass = "2RaUwBgYHMc";
+    // Add your database config here 
+    private $server = '';
+    private $dbname = "";
+    private $user = "";
+    private $pass = "";
 
     public function getServer()
     {
