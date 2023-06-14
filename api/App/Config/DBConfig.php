@@ -5,9 +5,10 @@ namespace App\Config;
 class DBConfig 
 {
     // TODO : Implement DOTENV file to get this configuration from 
-    private $server = 'localhost';
-    private $dbname = "ecommerce_test";
-    private $user = "root";
+    // Add your database config here 
+    private $server = '';
+    private $dbname = "";
+    private $user = "";
     private $pass = "";
 
     public function getServer()
