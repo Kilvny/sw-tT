@@ -14,13 +14,13 @@ const Home = () => {
   // get products from server 
   const fetchProducts = async () => {
     const data = await axios
-      .get("http://localhost:80/mvc/product/getall", {
+      .get("http://kilvny-scandiweb-task.infinityfreeapp.com/api/product/getall", {
         responseType: "json",
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         let data = response.data.replace("<br /> Product <br />","")
-        console.log(JSON.parse(data));
+        // console.log(JSON.parse(data));
         // return JSON.parse(data)
         setProducts(JSON.parse(data));
       })
@@ -29,7 +29,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchProducts();
-    console.log(`Products are : ${"s"}`);
+    // console.log(`Products are : ${"s"}`);
 
     return () => {
       // no cleanup needed;
@@ -38,12 +38,12 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .delete(
-        "http://localhost:80/mvc/product/delete",
+      .post(
+        "http://kilvny-scandiweb-task.infinityfreeapp.com/api/product/delete",
         { data: selectedProducts }
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
       })
       .catch((err) => {
         console.log(err.message);
@@ -62,8 +62,8 @@ const Home = () => {
       selectedProductsCount = selectedProductsCount + 1;
       setDelectedProducts(arr);
     });
-    console.log(selectedProductsCount, selectedProducts);
-    console.log("MASS DELETE CLICKED");
+    // console.log(selectedProductsCount, selectedProducts);
+    // console.log("MASS DELETE CLICKED");
     
   };
 

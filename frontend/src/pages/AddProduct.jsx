@@ -33,7 +33,7 @@ const AddProduct = () => {
   const handleFormChange = (event) => {
     const { name, value } = event.target;
 
-    console.log(`name is ${name}`);
+    // console.log(`name is ${name}`);
     setTypeData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -49,7 +49,7 @@ const AddProduct = () => {
   }
 
   const handleLSubmit = (data) => {
-    console.log(`%c selectedOption is ${selectedOption}`, "font-size: 18px;");
+    // console.log(`%c selectedOption is ${selectedOption}`, "font-size: 18px;");
     
     isEmpty(data, selectedOption) // it will raise an error if exists
 
@@ -59,7 +59,7 @@ const AddProduct = () => {
 
 
     axios
-      .post("http://localhost:80/mvc/product/add", data)
+      .post("http://kilvny-scandiweb-task.infinityfreeapp.com/api/product/add", data)
       .then((res) => {
         if(!checkAddProductError(res)) // if there is no error
         {
@@ -69,6 +69,23 @@ const AddProduct = () => {
       .catch((err) => {
         console.log(err.message);
       });
+//     fetch("https://kilvny-scandiweb-task.000webhostapp.com/product/add",{
+//         method: "POST",
+
+//         body: JSON.stringify(data),
+
+//         headers: { "Content-type": "application/json; charset=utf-8" }
+//     })
+//       .then((res) => {
+//         if(!checkAddProductError(res)) // if there is no error
+//         {
+//             console.log(res.json())
+//             // navigate("/")
+//         }
+//       })
+//       .catch((err) => {
+//         console.log(err.message);
+//       });
   };
 
   return (

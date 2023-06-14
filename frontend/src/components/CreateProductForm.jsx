@@ -52,11 +52,11 @@ const CreateProductForm = ({ onChange, value, register, option, errors }) => {
         </label>
 
         {/* type switcher */}
-        <label htmlFor="type_switch" className="product_form_field">
+        <label htmlFor="productType" className="product_form_field">
           <p>Type Switcher</p>
           <select
             name="Type_Switcher"
-            id="type_switch"
+            id="productType"
             onChange={handleOptionChange}
           >
             <option value={options[0]}>{options[0]}</option>

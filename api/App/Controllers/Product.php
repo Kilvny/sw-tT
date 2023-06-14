@@ -85,15 +85,16 @@ class Product extends Controller
     public function delete()
     {
         // get the id's from the request
-        $ids = '';
-        if ($_SERVER["REQUEST_METHOD"] != "DELETE") {
-            var_dump(['status' => 404, 'message' => 'Only DELETE method is allowed']);
-            return ['status' => 404, 'message' => 'Only DELETE method is allowed'];
+        $ids = ''; // changed this to POST as DELETE is not supported on the host site
+        if ($_SERVER["REQUEST_METHOD"] != "POST") {
+            var_dump(['status' => 404, 'message' => 'Only POST method is allowed']);
+            return ['status' => 404, 'message' => 'Only POST method is allowed'];
         }
 
         // receive the form data and restructure it 
         $data = json_decode(file_get_contents("php://input"), true); // to deal with data as associatve 
-        $ids = join(",", $data);
+        // echo "data are :" . $data['data'][0];
+        $ids = join(",", $data['data']);
         var_dump($ids);
 
         try {
